@@ -1,6 +1,6 @@
 package com.proyecto.demo.controladores;
 
-import com.proyecto.demo.entidades.Barra;
+import com.proyecto.demo.entidades.Publicacion;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.proyecto.demo.entidades.Usuario;
-import com.proyecto.demo.servicios.BarraServicio;
+import com.proyecto.demo.servicios.PublicacionServicio;
 import com.proyecto.demo.servicios.UsuarioServicio;
 
 @Controller
@@ -24,13 +24,13 @@ public class AdminController {
 	@Autowired 
         UsuarioServicio usuarioServicio;
         @Autowired 
-        BarraServicio barraServicio;
+        PublicacionServicio barraServicio;
 	
 	@GetMapping("/dashboard")
 	public String inicioAdmin(ModelMap modelo) {
 		
 		List<Usuario> usuarios = usuarioServicio.todosLosUsuarios();
-		List<Barra> barras = barraServicio.listarTodas();
+		List<Publicacion> barras = barraServicio.listarTodas();
 		modelo.put("usuarios", usuarios);
                 modelo.put("usuarioss", barras);
                 

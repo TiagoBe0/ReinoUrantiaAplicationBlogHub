@@ -1,14 +1,15 @@
 package com.proyecto.demo.controladores;
 
 
-import com.proyecto.demo.entidades.Barra;
+import com.proyecto.demo.entidades.Comentario;
+import com.proyecto.demo.entidades.Publicacion;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.entidades.Zona;
 import com.proyecto.demo.errores.ErrorServicio;
 import com.proyecto.demo.repositorios.ZonaRepositorio;
-import com.proyecto.demo.servicios.BarraServicio;
+import com.proyecto.demo.servicios.PublicacionServicio;
 import com.proyecto.demo.servicios.CristalServicio;
-import com.proyecto.demo.servicios.CristaleriaServicio;
+import com.proyecto.demo.servicios.ComentarioServicio;
 import com.proyecto.demo.servicios.RupturaServicio;
 import com.proyecto.demo.servicios.UsuarioServicio;
 import java.util.List;
@@ -31,14 +32,14 @@ public class UsuarioController {
     @Autowired
     private UsuarioServicio usuarioServicio;
     @Autowired
-    private CristaleriaServicio cristaleriaServicio;
+    private ComentarioServicio cristaleriaServicio;
 
     @Autowired
     private RupturaServicio rupturaServicio;
     @Autowired
     private ZonaRepositorio zonaRepositorio;
     @Autowired
-    private BarraServicio barraServicio;
+    private PublicacionServicio barraServicio;
     
     @Autowired
     private CristalServicio cristalServicio;
@@ -69,14 +70,12 @@ public class UsuarioController {
         }
         return "perfilModificar.html";
     }
-    //Este es el que llega a crear barra
+    //CREAR PUBLICACION GET
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
-    @GetMapping("/editar-perfil")
+    @GetMapping("/editar-publicacion")
     public String editarPerfilviejo(HttpSession session, @RequestParam String id,String nombre, ModelMap model) throws ErrorServicio {
-        System.out.println("Estamos llegando a controlador del usuariossesision");
-        //barraServicio.registrar(nombre, id);
-       //List<Barra> barras =usuarioServicio.todasLasBarras(id);
-         //model.put("barras", barras);
+      
+        
 
         Usuario login = (Usuario) session.getAttribute("usuariosession");
         if (login == null || !login.getId().equals(id)) {
@@ -91,8 +90,40 @@ public class UsuarioController {
         } catch (ErrorServicio e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "perfil.html";
+        return "registroPublicacion.html";
     }
+      //REGISTRO BARRA POST
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @PostMapping("/actualizar-publicacion")
+    public String actualizarBarra(ModelMap modelo, HttpSession session,   String id,String  titulo,  String contenido ,MultipartFile archivo) throws ErrorServicio {
+        //Aqui me comunico con MODIFICARBARRA
+         usuarioServicio.modificarBarra(id, titulo,contenido,archivo);
+        Usuario usuario = null;
+        try {
+
+            Usuario login = (Usuario) session.getAttribute("usuariosession");
+            if (login == null || !login.getId().equals(id)) {
+                return "redirect:/inicio";
+            }
+
+            usuario = usuarioServicio.buscarPorId(id);
+            //usuarioServicio.modificarBarra(id,nombre);
+           
+            session.setAttribute("usuariosession", usuario);
+
+            return "redirect:/inicio";
+        } catch (ErrorServicio ex) {
+           
+
+            return "perfil.html";
+        }
+
+    }
+    
+    
+    
+    
+    
      //HTML CREAR CRISTAL
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
     @GetMapping("/editar-cristal")
@@ -117,14 +148,15 @@ public class UsuarioController {
         return "registroCristal.html";
     }
     
-    //ESTE ES PARA ENTRAR AL FORMULARIO DE CRISTALERIA 
+    //ESTE ES PARA ENTRAR AL FORMULARIO DE COMENTARIO GET
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
-    @GetMapping("/editar-barra")
-    public String cargarCristaleria(HttpSession session, @RequestParam String id, String nombre,ModelMap model) throws ErrorServicio {
+    @GetMapping("/editar-comentario/{id}/{idPublicacion}")
+    public String cargarCristaleria(HttpSession session, @PathVariable String id,@PathVariable String idPublicacion, String nombre,ModelMap model) throws ErrorServicio {
         //barraServicio.registrar(nombre, id);
-System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
+
         Usuario login = (Usuario) session.getAttribute("usuariosession");
-        model.put("barras", usuarioServicio.buscarPorId(id).getBarras());
+        model.put("publicacion", barraServicio.buscarPorId(idPublicacion));
+      
         if (login == null || !login.getId().equals(id)) {
             return "redirect:/inicio";
         }
@@ -139,8 +171,42 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
         } catch (ErrorServicio e) {
             model.addAttribute("error", e.getMessage());
         }
-        return "registroCristaleria.html";
+        return "registroComentario.html";
     }
+    
+     //POST CREAR COMENTARIO
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @PostMapping("/actualizar-comentario")
+    public String actualizarCristaleria(ModelMap modelo, HttpSession session,   String id,String idPublicacion, String contenido) throws ErrorServicio {
+        
+        //Aqui me comunico con modificar cristaleria
+         cristaleriaServicio.modificar(null, contenido, idPublicacion, id);
+        Usuario usuario = null;
+        try {
+
+            Usuario login = (Usuario) session.getAttribute("usuariosession");
+            if (login == null || !login.getId().equals(id)) {
+                return "redirect:/inicio";
+            }
+
+            usuario = usuarioServicio.buscarPorId(id);
+            //usuarioServicio.modificarBarra(id,nombre);
+           
+            session.setAttribute("usuariosession", usuario);
+
+            return "redirect:/inicio";
+        } catch (ErrorServicio ex) {
+           
+
+            return "perfil.html";
+        }
+
+    }
+    
+    
+    
+    
+    
      //ESTE ES PARA ENTRAR AL PANEL BARRA
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
     @GetMapping("/panel-barra")
@@ -248,14 +314,11 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
         }
 
     }
-    
-    
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
-    @PostMapping("/actualizar-barra")
-    public String actualizarBarra(ModelMap modelo, HttpSession session,   String id,  String nombre ) throws ErrorServicio {
-        System.out.println("ACTUALIZAR BARRA"+nombre+id);
-        //Aqui me comunico con MODIFICARBARRA
-         usuarioServicio.modificarBarra(id, nombre);
+    //AGREGAR AMIGOS
+   @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @GetMapping("/agregar-amigo/{id}/{idAmigo}")
+    public String agregarAmigo(ModelMap modelo, HttpSession session, @PathVariable String id,@PathVariable String idAmigo) {
+       System.out.println(id+";"+idAmigo+"ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
         Usuario usuario = null;
         try {
 
@@ -265,8 +328,7 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
             }
 
             usuario = usuarioServicio.buscarPorId(id);
-            //usuarioServicio.modificarBarra(id,nombre);
-           
+            usuarioServicio.agregarAmigo(id,idAmigo);
             session.setAttribute("usuariosession", usuario);
 
             return "redirect:/inicio";
@@ -278,6 +340,7 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
 
     }
     
+    //LOFIC
       @GetMapping("/loginUsuarioModelo")
     public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String logout, ModelMap model) {
         if (error != null) {
@@ -295,17 +358,25 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
     }
      @GetMapping("/listarbarra/{idUsuario}")
     public String barras(ModelMap modelo , @PathVariable String idUsuario) throws ErrorServicio {
-        List<Barra> barras =usuarioServicio.buscarPorId(idUsuario).getBarras();
+        List<Publicacion> barras =usuarioServicio.buscarPorId(idUsuario).getBarras();
        modelo.put("barras", barras);
         return "registroBarra.html";
     }
+    //INICIO DE USUARIO LOGIN GET
      @GetMapping("/inicioUsuario")
     public String inicioUsuario(ModelMap modelo) {
         
+         List<Usuario> usuariosActivos = usuarioServicio.todosLosUsuarios();
+        List<Publicacion> todasPublicaciones = barraServicio.listarTodas();
+        List<Comentario> todosComentarios=cristaleriaServicio.todasCristalrias();
+        //Recordar que utilizo el modelo,para viajar con la llave usuarios al HTML la lista usuariosactivos
+        modelo.addAttribute("usuarios", usuariosActivos);
+          modelo.addAttribute("publicaciones", todasPublicaciones);
+          modelo.addAttribute("comentarios", todosComentarios);
         
         modelo.put("usuarios",usuarioServicio.todosLosUsuarios());
         
-        return  "panelBarra.html";
+        return  "index_blog.html";
     }
     
      @PostMapping("/registrar")
@@ -322,34 +393,7 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
         return "exito.html";
     } 
 
- //POST CREAR CRISTALERIA
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
-    @PostMapping("/actualizar-cristaleria")
-    public String actualizarCristaleria(ModelMap modelo, HttpSession session,   String id,MultipartFile archivo, String tipo, String descripcion, float precio, int enStock,String idBarra,String idCristal) throws ErrorServicio {
-        System.out.println("CRISTALERIA LELGA A CONTROLADRO USUARIO"+ precio +";"+idCristal);
-        //Aqui me comunico con modificar cristaleria
-         cristaleriaServicio.modificar(archivo, tipo, descripcion, precio, enStock, idBarra,id, idCristal);
-        Usuario usuario = null;
-        try {
 
-            Usuario login = (Usuario) session.getAttribute("usuariosession");
-            if (login == null || !login.getId().equals(id)) {
-                return "redirect:/inicio";
-            }
-
-            usuario = usuarioServicio.buscarPorId(id);
-            //usuarioServicio.modificarBarra(id,nombre);
-           
-            session.setAttribute("usuariosession", usuario);
-
-            return "redirect:/inicio";
-        } catch (ErrorServicio ex) {
-           
-
-            return "perfil.html";
-        }
-
-    }
     
     
     
@@ -397,7 +441,7 @@ System.out.println("NOMBRE E ID DE USUARIO BARRA _"+id+";"+nombre);
 //METODO PARA MODIFICAR BARRA
 @GetMapping("/modificar-barra-panel/{id}")
 	public String modificarBarraPanel(ModelMap modelo, @PathVariable String id) throws ErrorServicio {
-		Barra barra =barraServicio.buscarPorId(id);
+		Publicacion barra =barraServicio.buscarPorId(id);
             modelo.put("barra", barra);
             modelo.addAttribute("rupturas",barra.getUsuario().getTodasLasRupturas());
           

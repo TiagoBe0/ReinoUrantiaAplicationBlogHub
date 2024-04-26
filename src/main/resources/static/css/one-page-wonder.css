@@ -79,12 +79,13 @@ header.masthead .masthead-content .masthead-subheading {
   font-size: 2rem;
 }
 
-header.masthead .bg-circle {
-  z-index: 0;
-  position: absolute;
-  border-radius: 100%;
-  background: linear-gradient(0deg, #ee0979 0%, #ff6a00 100%);
-}
+    header.masthead .bg-circle {
+        z-index: 0;
+        position: absolute;
+        border-radius: 100%;
+        background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(2,0,36,1) 14%, rgba(9,102,121,0.938813025210084) 50%, rgba(0,212,255,1) 75%);
+    }
 
 header.masthead .bg-circle-1 {
   height: 90rem;

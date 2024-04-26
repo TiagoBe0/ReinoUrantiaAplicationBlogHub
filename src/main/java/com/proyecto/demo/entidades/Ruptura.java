@@ -27,7 +27,7 @@ public class Ruptura {
     @Temporal(TemporalType.TIMESTAMP)
     private Date baja;
      @OneToOne
-     private Cristaleria tipoCristaleria;
+     private Comentario tipoCristaleria;
      
      private float costoRuptura;
 
@@ -89,11 +89,11 @@ public class Ruptura {
         this.baja = baja;
     }
 
-    public Cristaleria getTipoCristaleria() {
+    public Comentario getTipoCristaleria() {
         return tipoCristaleria;
     }
 
-    public void setTipoCristaleria(Cristaleria tipoCristaleria) {
+    public void setTipoCristaleria(Comentario tipoCristaleria) {
         this.tipoCristaleria = tipoCristaleria;
     }
 

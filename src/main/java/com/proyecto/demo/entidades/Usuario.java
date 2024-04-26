@@ -14,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.proyecto.demo.enums.Rol;
 import java.util.List;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -32,11 +33,14 @@ public class Usuario {
     @ManyToOne
     private Zona zona;
     
-    @OneToMany
-    private List<Barra> barras;
     
     @OneToMany
-    private List<Cristaleria> todasLasCristalerias;
+    private List<Usuario> amigos;
+    @OneToMany
+    private List<Publicacion> barras;
+    
+    @OneToMany
+    private List<Comentario> todasLasCristalerias;
      
     @OneToMany
     private List<Ruptura> todasLasRupturas;
@@ -52,19 +56,27 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    public List<Barra> getBarras() {
+    public List<Publicacion> getBarras() {
         return barras;
     }
 
-    public void setBarras(List<Barra> barras) {
+    public List<Usuario> getAmigos() {
+        return amigos;
+    }
+
+    public void setAmigos(List<Usuario> amigos) {
+        this.amigos = amigos;
+    }
+
+    public void setBarras(List<Publicacion> barras) {
         this.barras = barras;
     }
 
-    public List<Cristaleria> getTodasLasCristalerias() {
+    public List<Comentario> getTodasLasCristalerias() {
         return todasLasCristalerias;
     }
 
-    public void setTodasLasCristalerias(List<Cristaleria> todasLasCristalerias) {
+    public void setTodasLasCristalerias(List<Comentario> todasLasCristalerias) {
         this.todasLasCristalerias = todasLasCristalerias;
     }
 

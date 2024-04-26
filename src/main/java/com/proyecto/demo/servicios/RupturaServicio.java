@@ -2,7 +2,7 @@
 
 package com.proyecto.demo.servicios;
 
-import com.proyecto.demo.entidades.Cristaleria;
+import com.proyecto.demo.entidades.Comentario;
 import com.proyecto.demo.entidades.Ruptura;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.errores.ErrorServicio;
@@ -22,9 +22,9 @@ public class RupturaServicio {
     @Autowired
     private UsuarioServicio usuarioServicio;
     @Autowired
-    private CristaleriaServicio cristaleriaServicio;
+    private ComentarioServicio cristaleriaServicio;
     @Autowired
-    private BarraServicio barraServicio;
+    private PublicacionServicio barraServicio;
     
     @Transactional
     public void modificar( String nombre, String explicacion, int cantidad,String idCristaleria,String id) throws ErrorServicio {
@@ -36,7 +36,7 @@ public class RupturaServicio {
         
         if (!idCristaleria.isEmpty()) {
 
-            Cristaleria cristaleria = cristaleriaServicio.buscarPorId(idCristaleria);
+            Comentario cristaleria = cristaleriaServicio.buscarPorId(idCristaleria);
                  Usuario usuario = usuarioServicio.buscarPorId(id);
                  
            ruptura.setNombre(nombre);

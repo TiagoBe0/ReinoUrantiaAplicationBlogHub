@@ -28,8 +28,8 @@ header.masthead .masthead-content .masthead-subheading{font-size:2rem}
         z-index: 0;
         position: absolute;
         border-radius: 100%;
-        background: rgb(2,0,36);
-        background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(98,18,50,1) 54%, rgba(0,212,255,1) 100%);
+        background: rgb(0, 96, 187);
+        background: radial-gradient(circle, rgba(217,243,245,1) 5%, rgba(39,109,190,1) 34%, rgba(72,225,255,1) 98%);
     }
 header.masthead .bg-circle-1{height:90rem;width:90rem;bottom:-55rem;left:-55rem}
 header.masthead .bg-circle-2{height:50rem;width:50rem;top:-25rem;right:-25rem}
@@ -39,9 +39,9 @@ header.masthead .bg-circle-4{height:30rem;width:30rem;top:-5rem;right:35%}
 header.masthead .masthead-content .masthead-heading{font-size:6rem}
 header.masthead .masthead-content .masthead-subheading{font-size:4rem}}
 .bg-primary{background-color:#000!important}
-.btn-primary{background-color:rgba(121,9,53,1);border-color:#000000}
+.btn-primary{background-color:rgba(39,109,190,1);border-color:#000000}
 btn-primary:active,.btn-primary:focus,.btn-primary:hover{background-color:#fa5705!important;border-color:#bd0760!important}
-.btn-primary:focus{box-shadow:0 0 0 .2rem rgba(238,9,121,.5)}.btn-secondary{background-color:#792201;border-color:#963e00}
+.btn-primary:focus{box-shadow:0 0 0 .2rem rgba(39,109,190,1)}.btn-secondary{background-color:#792201;border-color:#963e00}
 .btn-secondary:active,.btn-secondary:focus,.btn-secondary:hover{background-color:blue!important;border-color:black!important}
 .btn-secondary:focus{box-shadow:0 0 0 .2rem rgba(255,106,0,.5)}
 /*Cards*/

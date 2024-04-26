@@ -1,0 +1,12 @@
+
+
+FROM ubuntu:latest
+
+RUN apt update && upgrade -y && apt install python3 && apt install nmap -y && apt install python3-pip -y && apt install git -y && apt autoremove -y
+
+
+RUN git clone  https://github.com/TiagoBe0/SpringUsoSesionesUsuario.git
+WORKDIR /kickthemout
+RUN pip3 install -r requirements.txt
+
+CMD python3 kickthemout.py

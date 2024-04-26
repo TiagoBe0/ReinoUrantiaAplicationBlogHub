@@ -1,7 +1,7 @@
 package com.proyecto.demo.servicios;
 
-import com.proyecto.demo.entidades.Barra;
-import com.proyecto.demo.entidades.Cristaleria;
+import com.proyecto.demo.entidades.Publicacion;
+import com.proyecto.demo.entidades.Comentario;
 import com.proyecto.demo.entidades.Foto;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.entidades.Zona;
@@ -37,12 +37,12 @@ public class UsuarioServicio implements UserDetailsService {
     private UsuarioRepositorio usuarioRepositorio;
     
     @Autowired
-    private CristaleriaServicio cristaleriaServicio;
+    private ComentarioServicio cristaleriaServicio;
 
     @Autowired
     private FotoServicio fotoServicio;
     @Autowired
-    private BarraServicio barraServicio;
+    private PublicacionServicio barraServicio;
 
      @Autowired
     private BarraRepositorio barraRepositorio;
@@ -51,7 +51,7 @@ public class UsuarioServicio implements UserDetailsService {
     public void registrarBarra(String nombre,String idUsuario) throws ErrorServicio {
 
        System.out.println("LLEGAMOS A USUARIO REGISTRO BARRAS");
-       Barra barra = new Barra();
+       Publicacion barra = new Publicacion();
        barra.setNombre(nombre);
 
        //barra.setAlta(new Date());
@@ -92,6 +92,27 @@ public class UsuarioServicio implements UserDetailsService {
         usuarioRepositorio.save(usuario);
 
     }
+    @Transactional
+    public void agregarAmigo( String id, String idAmigo) throws ErrorServicio {
+
+        
+        if(!id.equals(idAmigo)){
+        
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+        Optional<Usuario> amigo = usuarioRepositorio.findById(idAmigo);
+        if (respuesta.isPresent() && amigo.isPresent()) {
+
+         Usuario usuario = respuesta.get();
+        List<Usuario> amigos = usuario.getAmigos();
+        amigos.add(amigo.get());
+        usuario.setAmigos(amigos);
+        }
+        } else {
+
+            throw new ErrorServicio("No se encontró el usuario solicitado");
+        }
+
+    }
 
     @Transactional
     public void modificar(MultipartFile archivo, String id, String nombre, String apellido, String mail, String clave, String clave2) throws ErrorServicio {
@@ -126,14 +147,24 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+    
+    //RGISTRO DE NUEVA PUBLICACION/BARRA
     @Transactional
-    public void modificarBarra( String id, String nombre) throws ErrorServicio {
+    public void modificarBarra( String id, String titulo,String contenido,MultipartFile archivo) throws ErrorServicio {
 
         
-        Barra barra = new Barra();
-        barra.setNombre(nombre);
+        Publicacion barra = new Publicacion();
+        barra.setNombre(contenido);
         barra.setUsuario(buscarPorId(id));
+        barra.setTitulo(titulo);
+       if(archivo!=null){
+           
+          Foto foto= new Foto();
+          foto=fotoServicio.guardar(archivo);
+           barra.setFoto(foto);
        
+       
+       }
          barraRepositorio.save(barra);
         
 
@@ -159,7 +190,7 @@ public class UsuarioServicio implements UserDetailsService {
     }
         
 @Transactional
-public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cristalerias){
+public void actualizarListaDeCristalerias(Usuario usuario,List<Comentario> cristalerias){
     
     usuario.setTodasLasCristalerias(cristalerias);
 
@@ -172,7 +203,7 @@ public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cris
     public void modificarCristaleria( String id, String nombre,String tipo, String descripcion, float precio, int enStock,String idBarra) throws ErrorServicio {
 
         
-        Barra barra = new Barra();
+        Publicacion barra = new Publicacion();
         barra.setNombre(nombre);
         barra.setUsuario(buscarPorId(id));
        
@@ -277,15 +308,15 @@ public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cris
     
     
     //listar toda crtistaleria de barras
-    public List<Cristaleria> listarTodaLaCristaleria(String id) throws ErrorServicio{
+    public List<Comentario> listarTodaLaCristaleria(String id) throws ErrorServicio{
           
         Usuario usuario = buscarPorId(id);
-        List<Barra> barras =usuario.getBarras();
-        List<Cristaleria> todasLasCristalerias = null;
+        List<Publicacion> barras =usuario.getBarras();
+        List<Comentario> todasLasCristalerias = null;
         
-        for (Barra barra : barras) {
+        for (Publicacion barra : barras) {
             
-            for (Cristaleria obj : barra.getListaCristalerias()) {
+            for (Comentario obj : barra.getListaCristalerias()) {
                 todasLasCristalerias.add(obj);
             }
             
@@ -295,11 +326,12 @@ public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cris
     }
     
    //huscar cristaleria por id
-    public List<Cristaleria> buscarCristaleriaPorIdUsuario(String id){
+    /*
+    public List<Comentario> buscarCristaleriaPorIdUsuario(String id){
     
     return cristaleriaServicio.listarPorIdUsuario(id);
     }
-
+*/
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
     	
@@ -354,7 +386,7 @@ public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cris
         
     }
     @Transactional(readOnly=true)
-    public List<Barra>  todasLasBarras(String idUsuario) throws ErrorServicio{
+    public List<Publicacion>  todasLasBarras(String idUsuario) throws ErrorServicio{
      Usuario usuario =buscarPorId(idUsuario);
      
  
@@ -363,9 +395,9 @@ public void actualizarListaDeCristalerias(Usuario usuario,List<Cristaleria> cris
     }
     
     public void actualizarListBarras(String idUsuario,String idBarra) throws ErrorServicio{
-        //buscamos el usuario y getiamos las listas de Barra
+        //buscamos el usuario y getiamos las listas de Publicacion
     Usuario usuario = buscarPorId(idUsuario);
-    List<Barra> barras = usuario.getBarras();
+    List<Publicacion> barras = usuario.getBarras();
     //sumamos las barras a la list
     barras.add(barraServicio.buscarPorId(idBarra));
     usuario.setBarras(barras);

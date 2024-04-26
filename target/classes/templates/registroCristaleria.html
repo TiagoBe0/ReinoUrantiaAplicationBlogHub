@@ -21,7 +21,7 @@
                         
                         <div class="p-5">
 
-                            <h2 class="display-4">Registrar Nueva Barra</h2>
+                            <h2 class="display-4">Comentario</h2>
                             
                              <form action="/usuario/actualizar-cristaleria" method="POST" enctype="multipart/form-data">
 
@@ -30,41 +30,13 @@
                                                             
                                                                     <input type="hidden"  name="id" th:value="${perfil.id}"/>
                                                                     
+                                                                      
                                                                     
-                                                                    <label>Nombre o Tipo de Cristaleria</label>
+                                                                    <label>Contenido</label>
                                                                     <input type="text" class="form-control" name="tipo"  />
-                                                                    <label>Descripcion(opcional)</label>
-                                                                    <input type="text" class="form-control" name="descripcion"  />
-                                                                    <label>Cantidad</label>
-                                                                    <input type="number" class="form-control" name="enStock"  />
-                                                                    <label>precio</label>
-                                                                    <input type="number" class="form-control" name="precio"  />
-                                                                      <label>Barra Perteneciente</label>
-                                                                              <select class="form-control" name="idBarra"> 
-                                                                            <option th:each="barra : ${barras}" th:value="${barra.id}" th:text="${barra.nombre}"></option>
-                                                                            </select>                                      
-                                                                        
-                                                                    <label>Foto </label>
-                                                                    
-                                                                       <div class="form-check" th:each="cristal : ${cristales}" style="grid-auto-columns: flex;">
-                                                                           <input class="form-check-input" type="checkbox" th:value="${cristal.id}"name="idCristal" id="flexCheckDefault">
-                                           
-                                                                               <label class="form-check-label" for="flexCheckDefault">
-    
-    <img th:if="${cristal.foto != null}" class="img-fluid rounded-circle"  style="width: 60px" th:src="${'/foto/cristalfoto/' + cristal.id}" alt="">
-                                                              
-  </label>
-
-                                                                       
-                                                                       </div>
-                                                                 
-<label>Nueva Foto (La cristaleria no se encuentra entre las opciones)</label>
-
-                                                                    <input type="file" class="form-control" name="archivo"  />
-                                                                    
-                                                                    
+                                                                   
                                                                   
-                                                                    <br/><button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+                                                                    <br/><button type="submit" class="btn btn-primary">enviar</button>
                                                                 </form>
                         </div>
                     </div>

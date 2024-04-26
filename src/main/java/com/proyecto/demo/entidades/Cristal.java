@@ -24,7 +24,7 @@ public class Cristal {
 
     private String nombre;
     @OneToMany
-      List<Cristaleria> listaCristalerias;
+      List<Comentario> listaCristalerias;
     @OneToOne
     private Foto foto;
 
@@ -54,11 +54,11 @@ public class Cristal {
         this.foto = foto;
     }
 
-    public List<Cristaleria> getListaCristalerias() {
+    public List<Comentario> getListaCristalerias() {
         return listaCristalerias;
     }
 
-    public void setListaCristalerias(List<Cristaleria> listaCristalerias) {
+    public void setListaCristalerias(List<Comentario> listaCristalerias) {
         this.listaCristalerias = listaCristalerias;
     }
     

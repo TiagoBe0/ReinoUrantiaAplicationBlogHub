@@ -1,9 +1,13 @@
 package com.proyecto.demo.controladores;
 
+import com.proyecto.demo.entidades.Comentario;
+import com.proyecto.demo.entidades.Publicacion;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.entidades.Zona;
 import com.proyecto.demo.errores.ErrorServicio;
 import com.proyecto.demo.repositorios.ZonaRepositorio;
+import com.proyecto.demo.servicios.ComentarioServicio;
+import com.proyecto.demo.servicios.PublicacionServicio;
 import com.proyecto.demo.servicios.UsuarioServicio;
 import java.util.List;
 
@@ -24,13 +28,21 @@ public class Controlador {
 
     @Autowired
     private ZonaRepositorio zonaRepositorio;
+    @Autowired
+    private PublicacionServicio publicacionServicio;
+    @Autowired
+    private ComentarioServicio comentarioServicio;
 
     @GetMapping("/")
     public String index(ModelMap modelo) {
         List<Usuario> usuariosActivos = usuarioServicio.todosLosUsuarios();
+        List<Publicacion> todasPublicaciones = publicacionServicio.listarTodas();
+        List<Comentario> todosComentarios=comentarioServicio.todasCristalrias();
         //Recordar que utilizo el modelo,para viajar con la llave usuarios al HTML la lista usuariosactivos
         modelo.addAttribute("usuarios", usuariosActivos);
-        return "index.html";
+          modelo.addAttribute("publicaciones", todasPublicaciones);
+          modelo.addAttribute("comentarios", todosComentarios);
+        return "index_blog.html";
     }
     
     @GetMapping("/formularioBarra")
@@ -77,8 +89,7 @@ public class Controlador {
 
     @PostMapping("/registrar")
     public String registrar( ModelMap modelo,MultipartFile archivo, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String mail, @RequestParam String clave1, @RequestParam String clave2) {
-        System.out.println("LLEGAMOS A LOS CONTROLADORES TIOOOOOOO");
-        try {
+          try {
             usuarioServicio.registrar(archivo, nombre, apellido, mail, clave1, clave2);
         } catch (ErrorServicio ex) {
            

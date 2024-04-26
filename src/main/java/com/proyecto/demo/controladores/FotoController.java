@@ -2,11 +2,13 @@ package com.proyecto.demo.controladores;
 
 
 import com.proyecto.demo.entidades.Cristal;
-import com.proyecto.demo.entidades.Cristaleria;
+import com.proyecto.demo.entidades.Comentario;
+import com.proyecto.demo.entidades.Publicacion;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.errores.ErrorServicio;
 import com.proyecto.demo.servicios.CristalServicio;
-import com.proyecto.demo.servicios.CristaleriaServicio;
+import com.proyecto.demo.servicios.ComentarioServicio;
+import com.proyecto.demo.servicios.PublicacionServicio;
 import com.proyecto.demo.servicios.UsuarioServicio;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +30,9 @@ public class FotoController {
     @Autowired
     private UsuarioServicio usuarioServicio;
      @Autowired
-    private CristaleriaServicio cristaleriaServicio;
-     
+    private ComentarioServicio cristaleriaServicio;
+     @Autowired
+    private PublicacionServicio publicacionServicio;
      @Autowired
      private CristalServicio cristalServicio;
 
@@ -58,7 +61,7 @@ public class FotoController {
     public ResponseEntity<byte[]> fotoCristlaeria(@PathVariable String id) {
 
         try {
-            Cristaleria cristaleria = cristaleriaServicio.buscarPorId(id);
+            Comentario cristaleria = cristaleriaServicio.buscarPorId(id);
             if (cristaleria.getFoto() == null) {
                 throw new ErrorServicio("El usuario no tiene una foto asignada.");
             }
@@ -74,8 +77,7 @@ public class FotoController {
         }
 
     }
-
-   @GetMapping("/cristalfoto/{id}")
+    @GetMapping("/cristalfoto/{id}")
     public ResponseEntity<byte[]> fotoCristal(@PathVariable String id) {
 
         try {
@@ -84,6 +86,26 @@ public class FotoController {
                 throw new ErrorServicio("El usuario no tiene una foto asignada.");
             }
             byte[] foto = cristal.getFoto().getContenido();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        } catch (ErrorServicio ex) {
+            Logger.getLogger(FotoController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+   @GetMapping("/publicacionfoto/{id}")
+    public ResponseEntity<byte[]> fotoPublicacion(@PathVariable String id) {
+
+        try {
+            Publicacion publicacion= publicacionServicio.buscarPorId(id);
+            if (publicacion.getFoto() == null) {
+                throw new ErrorServicio("El usuario no tiene una foto asignada.");
+            }
+            byte[] foto = publicacion.getFoto().getContenido();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
