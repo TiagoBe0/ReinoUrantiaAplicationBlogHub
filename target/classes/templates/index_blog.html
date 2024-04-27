@@ -189,7 +189,7 @@
               <button class="card tag-btn">
                 <img src="../assets/images/tag2.png" width="32" height="32" loading="lazy" alt="Culture">
 
-                <a th:href="@{/usuario/editar-comentario(id=__${session.usuariosession.id}__)}" th:if="${session.usuariosession != null}">Crear Cristaleria</a>
+                <a th:href="@{/usuario/perfil-blog(id=__${session.usuariosession.id}__)}" th:if="${session.usuariosession != null}">Tu Perfil</a>
         
               </button>
             </li>
@@ -199,6 +199,14 @@
                 <img src="../assets/images/tag3.png" width="32" height="32" loading="lazy" alt="Lifestyle">
 
                 <a th:href="@{/usuario/panel-barra(id=__${session.usuariosession.id}__)}" th:if="${session.usuariosession != null}">Adm Barra</a>
+       
+              </button>
+            </li>
+                    <li>
+              <button class="card tag-btn">
+                <img src="../assets/images/tag3.png" width="32" height="32" loading="lazy" alt="Lifestyle">
+
+                <a th:href="@{/usuario/editar-pdf(id=__${session.usuariosession.id}__)}" th:if="${session.usuariosession != null}">Subir PDF</a>
        
               </button>
             </li>
@@ -261,6 +269,7 @@
                 <figure class="card-banner img-holder" style="--width: 1602; --height: 903;">
                   <img  th:src="${'/foto/publicacionfoto/' + publicacion.id}" width="1602" height="903" loading="lazy"
                     alt="Self-observation is the first step of inner unfolding" class="img-cover">
+                      
                 </figure>
 
                 <div class="card-content">
@@ -290,6 +299,9 @@
                     <div class="profile-card">
                       <img th:src="${'/foto/publicacionfoto/' + publicacion.id}" width="48" height="48" loading="lazy" alt="Joseph"
                         class="profile-banner">
+                           <img th:if="${publicacion.foto == null}" src="../assets/images/a4.jpg"width="48" height="48" loading="lazy" alt="Joseph"
+                        class="profile-banner">
+                       
 
                       <div>
                         <p class="card-title" th:text="${publicacion.titulo}"></p>
@@ -358,8 +370,8 @@
                 <div class="recent-post-card">
 
                   <figure class="card-banner img-holder" style="--width: 271; --height: 258;">
-                    <img  th:src="${'/foto/publicacionfoto/' + publicacion.id}" width="271" height="258" loading="lazy"
-                    class="img-cover">
+                    <img  th:if="${publicacion.foto != null}"  th:src="${'/foto/publicacionfoto/' + publicacion.id}" width="271" height="258" loading="lazy" class="img-cover">
+                        <img th:if="${publicacion.foto == null}" src="../assets/images/a4.jpg" width="271" height="258" loading="lazy" class="img-cover" >
                         
                   </figure>
 

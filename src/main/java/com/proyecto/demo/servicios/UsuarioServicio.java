@@ -3,13 +3,16 @@ package com.proyecto.demo.servicios;
 import com.proyecto.demo.entidades.Publicacion;
 import com.proyecto.demo.entidades.Comentario;
 import com.proyecto.demo.entidades.Foto;
+import com.proyecto.demo.entidades.PdfFile;
 import com.proyecto.demo.entidades.Usuario;
 import com.proyecto.demo.entidades.Zona;
 import com.proyecto.demo.enums.Rol;
 import com.proyecto.demo.errores.ErrorServicio;
 import com.proyecto.demo.repositorios.BarraRepositorio;
+import com.proyecto.demo.repositorios.PdfFileRepositorio;
 import com.proyecto.demo.repositorios.UsuarioRepositorio;
 import com.proyecto.demo.repositorios.ZonaRepositorio;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +50,12 @@ public class UsuarioServicio implements UserDetailsService {
      @Autowired
     private BarraRepositorio barraRepositorio;
 
+     
+     @Autowired 
+     private PdfFileRepositorio pdfRepositorio;
+     
+     @Autowired
+     private PdfFileServicio pdfServicio;
  @javax.transaction.Transactional
     public void registrarBarra(String nombre,String idUsuario) throws ErrorServicio {
 
@@ -188,7 +197,31 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+       
+    //MODIFICAR PDF (DA ERROR PORQ EL ARCHIVO ES MUY GREANDE PARA LA TABLA)
+     @Transactional
+    public void modificarPDF( String nombre,int codigo,MultipartFile archivo) throws ErrorServicio, IOException {
+     
         
+       if (archivo != null && !archivo.isEmpty()) {
+            try {
+                
+                PdfFile foto = new PdfFile();
+                foto.setMime(archivo.getContentType());
+                foto.setNombre(archivo.getContentType());
+                foto.setArchivo(archivo.getBytes());
+                pdfRepositorio.save(foto);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+       
+
+        } else {
+
+            throw new ErrorServicio("No se encontró el usuario solicitado");
+        }
+
+    }
 @Transactional
 public void actualizarListaDeCristalerias(Usuario usuario,List<Comentario> cristalerias){
     

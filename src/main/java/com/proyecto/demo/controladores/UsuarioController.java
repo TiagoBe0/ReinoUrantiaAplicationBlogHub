@@ -10,8 +10,10 @@ import com.proyecto.demo.repositorios.ZonaRepositorio;
 import com.proyecto.demo.servicios.PublicacionServicio;
 import com.proyecto.demo.servicios.CristalServicio;
 import com.proyecto.demo.servicios.ComentarioServicio;
+import com.proyecto.demo.servicios.PdfFileServicio;
 import com.proyecto.demo.servicios.RupturaServicio;
 import com.proyecto.demo.servicios.UsuarioServicio;
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,8 @@ public class UsuarioController {
     @Autowired
     private CristalServicio cristalServicio;
     
+    @Autowired
+    private PdfFileServicio pdfServicio;
     
     //COPIA DE HTML FORMULARIO USUARIO
      
@@ -92,7 +96,7 @@ public class UsuarioController {
         }
         return "registroPublicacion.html";
     }
-      //REGISTRO BARRA POST
+      //REGISTRO PUBLICACION POST
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
     @PostMapping("/actualizar-publicacion")
     public String actualizarBarra(ModelMap modelo, HttpSession session,   String id,String  titulo,  String contenido ,MultipartFile archivo) throws ErrorServicio {
@@ -120,9 +124,86 @@ public class UsuarioController {
 
     }
     
+     //CREAR PDF GET
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @GetMapping("/editar-pdf")
+    public String editarPDF(HttpSession session, @RequestParam String id, ModelMap model) throws ErrorServicio {
+      
+        
+
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/inicio";
+        }
+
+        try {
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            
+            model.addAttribute("perfil", usuario);
+            
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "registroPdf.html";
+    }
+      //REGISTRO PDF POST
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @PostMapping("/actualizar-pdf")
+    public String editarPDF(ModelMap modelo, HttpSession session,   String id,String nombre ,MultipartFile archivo) throws ErrorServicio, IOException {
+        //Aqui me comunico con MODIFICARBARRA
+        Usuario usuario = null;
+        try {
+            usuarioServicio.modificarPDF(nombre, 3, archivo);
+
+            Usuario login = (Usuario) session.getAttribute("usuariosession");
+            if (login == null || !login.getId().equals(id)) {
+                return "redirect:/inicio";
+            }
+
+            usuario = usuarioServicio.buscarPorId(id);
+            //usuarioServicio.modificarBarra(id,nombre);
+           
+            session.setAttribute("usuariosession", usuario);
+
+            return "redirect:/inicio";
+        } catch (ErrorServicio ex) {
+           
+
+            return "perfil.html";
+        }
+
+    }
     
-    
-    
+     //PERFIL USUARIO PUBLICACIONES GET
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")
+    @GetMapping("/perfil-blog")
+    public String perfilUsuarioPublicaciones(HttpSession session, @RequestParam String id,String nombre, ModelMap model) throws ErrorServicio {
+      
+        
+
+        Usuario login = (Usuario) session.getAttribute("usuariosession");
+        if (login == null || !login.getId().equals(id)) {
+            return "redirect:/inicio";
+        }
+
+        try {
+            
+            Usuario usuario = usuarioServicio.buscarPorId(id);
+            List<Usuario> usuariosActivos = usuarioServicio.todosLosUsuarios();
+        List<Publicacion> todasPublicaciones = usuario.getBarras();
+        List<Comentario> todosComentarios=usuarioServicio.listarTodaLaCristaleria(id);
+        //Recordar que utilizo el modelo,para viajar con la llave usuarios al HTML la lista usuariosactivos
+        model.addAttribute("usuarios", usuariosActivos);
+          model.addAttribute("publicaciones", todasPublicaciones);
+          model.addAttribute("comentarios", todosComentarios);
+       
+            model.addAttribute("perfil", usuario);
+            
+        } catch (ErrorServicio e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "perfil_blog.html";
+    }
     
      //HTML CREAR CRISTAL
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USUARIO')")

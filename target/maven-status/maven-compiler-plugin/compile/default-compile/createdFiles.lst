@@ -1,0 +1,4 @@
+com\proyecto\demo\servicios\PdfFileServicio.class
+com\proyecto\demo\controladores\PdfController.class
+com\proyecto\demo\repositorios\PdfFileRepositorio.class
+com\proyecto\demo\entidades\PdfFile.class

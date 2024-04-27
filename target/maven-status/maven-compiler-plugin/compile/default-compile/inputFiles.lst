@@ -8,6 +8,8 @@ C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHu
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\repositorios\CristalRepositorio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\controladores\AdminController.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\DemoApplication.java
+C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\PdfFile.java
+C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\servicios\PdfFileServicio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\enums\Rol.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\Foto.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\security\Security.java
@@ -20,6 +22,7 @@ C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHu
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\servicios\UsuarioServicio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\controladores\Controlador.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\Zona.java
+C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\repositorios\PdfFileRepositorio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\repositorios\UsuarioRepositorio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\Publicacion.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\Ruptura.java
@@ -28,6 +31,7 @@ C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHu
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\repositorios\ComentarioRepositorio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\servicios\ComentarioServicio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\servicios\RupturaServicio.java
+C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\controladores\PdfController.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\repositorios\ZonaRepositorio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\servicios\PublicacionServicio.java
 C:\Users\santi\OneDrive\Documentos\NetBeansProjects\ReinoUrantiaAplicationBlogHub\src\main\java\com\proyecto\demo\entidades\Cristal.java
